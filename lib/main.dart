@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:wear/wear.dart';
 
-//Jesus Alberto Ronquillo Ramirez
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -12,7 +12,53 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Wear OS App',
       theme: ThemeData.dark(),
-      home: MyHomePage(),
+      home: WatchScreen(),
+    );
+  }
+}
+
+class WatchScreen extends StatelessWidget {
+  const WatchScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return WatchShape(
+      builder: (context, shape, child) {
+        return AmbientMode(
+          builder: (context, mode, child) {
+            if (mode == WearMode.active) {
+              return MyHomePage();
+            } else {
+              return AmbientWatchFace();
+            }
+          },
+        );
+      },
+    );
+  }
+}
+
+class AmbientWatchFace extends StatelessWidget {
+  const AmbientWatchFace({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: SizedBox.expand(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "FlutterOS",
+              style: TextStyle(color: Colors.blue[600], fontSize: 30),
+            ),
+            SizedBox(height: 15),
+            FlutterLogo(size: 60),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -123,7 +169,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Text(
                 'DS02SV-22',
                 style: TextStyle(fontSize: 5),
-              )
+              ),
             ],
           ),
         ),
